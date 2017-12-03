@@ -1,0 +1,60 @@
+<jmxtrans-agent>
+  <queries>
+    <%- if @include_common_jvm_queries -%>
+    <!-- JVM -->
+    <query
+      objectName="java.lang:type=GarbageCollector,*"
+      attributes="CollectionTime,CollectionCount"
+      resultAlias="jvm.gc.%name%.#attribute#"/>
+
+    <query
+      objectName="java.lang:type=Memory"
+      attribute="HeapMemoryUsage"
+      resultAlias="jvm.heapMemoryUsage.#key#"/>
+
+    <query
+      objectName="java.lang:type=Memory"
+      attribute="NonHeapMemoryUsage"
+      resultAlias="jvm.nonHeapMemoryUsage.#key#"/>
+
+    <query
+      objectName="java.lang:type=MemoryPool,*"
+      attributes="Usage"
+      resultAlias="jvm.memoryPools.%name%.#attribute#"/>
+
+    <query
+      objectName="java.lang:type=ClassLoading"
+      attribute="LoadedClassCount"
+      resultAlias="jvm.loadedClasses"/>
+
+    <query
+      objectName="java.lang:type=Threading"
+      attribute="ThreadCount"
+      resultAlias="jvm.thread"/>
+    <%- end -%>
+
+    <%- @additional_queries.each { |q| 
+          objectName = q["objectName"]
+          attributes = q["attributes"]
+          resultAlias = q["resultAlias"]
+    -%>
+    <query
+      objectName="<%= objectName %>"
+      <%- if !attributes.empty? -%>
+      attributes="<%= attributes.sort.join(",") %>
+      <%- end -%>
+      <%- if resultAlias -%>
+      resultAlias="<%= resultAlias %>"
+      <%- end -%>
+      />
+    <%- } # additional_queries.each -%>
+
+  </queries>
+  <outputWriter class="org.jmxtrans.agent.GraphitePlainTextTcpOutputWriter">
+    <host><%= @graphite_host %></host>
+    <port><%= @graphite_port %></port>
+    <namePrefix><%= @graphite_name_prefix %></namePrefix>
+  </outputWriter>
+  <collectIntervalInSeconds><%= @collection_interval_seconds%></collectIntervalInSeconds>
+  <reloadConfigurationCheckIntervalInSeconds><%= @reload_configuration_check_interval_seconds %></reloadConfigurationCheckIntervalInSeconds>
+</jmxtrans-agent>
