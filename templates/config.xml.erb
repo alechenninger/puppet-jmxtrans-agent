@@ -1,7 +1,6 @@
 <jmxtrans-agent>
   <queries>
     <%- if @include_common_jvm_queries -%>
-    <!-- JVM -->
     <query
       objectName="java.lang:type=GarbageCollector,*"
       attributes="CollectionTime,CollectionCount"
@@ -33,8 +32,7 @@
       resultAlias="threads.#attribute#"/>
     <%- end -%>
 
-    <!-- Custom -->
-    <%- @additional_queries.each { |q| 
+    <%- @custom_queries.each { |q| 
           objectName = q["objectName"]
           attributes = q["attributes"]
           resultAlias = q["resultAlias"]
@@ -48,7 +46,7 @@
       resultAlias="<%= resultAlias %>"/>
       <%- end -%>
 
-    <%- } # additional_queries.each -%>
+    <%- } # custom_queries.each -%>
   </queries>
   <outputWriter class="org.jmxtrans.agent.GraphitePlainTextTcpOutputWriter">
     <host><%= @graphite_host %></host>

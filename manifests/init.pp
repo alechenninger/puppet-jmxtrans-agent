@@ -2,7 +2,7 @@ class jmxtrans_agent (
   $version='1.2.8-SNAPSHOT',
   $collection_interval_seconds=10,
   $include_common_jvm_queries=true,
-  $additional_queries=[],
+  $custom_queries=[],
   $graphite_host,
   $graphite_port=2003,
   $graphite_name_prefix,
