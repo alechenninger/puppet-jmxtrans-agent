@@ -18,4 +18,4 @@ class profiles::my_java_app(
     jvm_args => $jmxtrans_agent::jvm_arguments
   }
 }
-``
+```
