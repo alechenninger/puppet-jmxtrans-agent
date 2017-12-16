@@ -1,13 +1,14 @@
 class jmxtrans_agent (
-  $version='1.2.7-SNAPSHOT',
+  $version='1.2.8-SNAPSHOT',
   $collection_interval_seconds=10,
   $include_common_jvm_queries=true,
   $additional_queries=[],
   $graphite_host,
-  $graphite_name_prefix='collectd.#reversed_hostname#.jmx.',
+  $graphite_port=2003,
+  $graphite_name_prefix,
   $collection_interval_seconds=10,
-  $reload_configuration_check_interval_seconds=30,
-  $wait_for_mbean_server=true,
+  $reload_configuration_check_interval_seconds=300,
+  $wait_for_mbean_server=false,
   $owner,
   $group,
 ) {
@@ -18,7 +19,7 @@ class jmxtrans_agent (
   $jar_path = "$install_path/$jar_name"
 
   # Intended to be used outside the module.
-  $jvm_arguments="-javaagent:$jar_path=$config_path -Djmxtrans.agent.premain.waitForMBeanServer=$wait_for_mbean_server"
+  $jvm_arguments="-javaagent:$jar_path=$config_path -Djmxtrans.agent.premain.waitForCustomMBeanServer=$wait_for_mbean_server"
 
   file { $install_path:
     ensure => directory,

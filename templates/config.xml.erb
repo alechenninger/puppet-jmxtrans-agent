@@ -1,38 +1,39 @@
 <jmxtrans-agent>
   <queries>
-    <%- if @include_common_jvm_queries -%>
+    <%- if @include_common_jvm_queries then -%>
     <!-- JVM -->
     <query
       objectName="java.lang:type=GarbageCollector,*"
       attributes="CollectionTime,CollectionCount"
-      resultAlias="jvm.gc.%name%.#attribute#"/>
+      resultAlias="memory.gc.%name%.#attribute#"/>
 
     <query
       objectName="java.lang:type=Memory"
       attribute="HeapMemoryUsage"
-      resultAlias="jvm.heapMemoryUsage.#key#"/>
+      resultAlias="memory.heap.#key#"/>
 
     <query
       objectName="java.lang:type=Memory"
       attribute="NonHeapMemoryUsage"
-      resultAlias="jvm.nonHeapMemoryUsage.#key#"/>
+      resultAlias="memory.non-heap.#key#"/>
 
     <query
       objectName="java.lang:type=MemoryPool,*"
       attributes="Usage"
-      resultAlias="jvm.memoryPools.%name%.#attribute#"/>
+      resultAlias="memory.pools.%name%.#attribute#"/>
 
     <query
       objectName="java.lang:type=ClassLoading"
       attribute="LoadedClassCount"
-      resultAlias="jvm.loadedClasses"/>
+      resultAlias="#attribute#"/>
 
     <query
       objectName="java.lang:type=Threading"
-      attribute="ThreadCount"
-      resultAlias="jvm.thread"/>
+      attributes="ThreadCount,DaemonThreadCount"
+      resultAlias="threads.#attribute#"/>
     <%- end -%>
 
+    <!-- Custom -->
     <%- @additional_queries.each { |q| 
           objectName = q["objectName"]
           attributes = q["attributes"]
@@ -40,21 +41,20 @@
     -%>
     <query
       objectName="<%= objectName %>"
-      <%- if !attributes.empty? -%>
+      <%- if attributes && !attributes.empty? then -%>
       attributes="<%= attributes.sort.join(",") %>
       <%- end -%>
-      <%- if resultAlias -%>
-      resultAlias="<%= resultAlias %>"
+      <%- if resultAlias then -%>
+      resultAlias="<%= resultAlias %>"/>
       <%- end -%>
-      />
-    <%- } # additional_queries.each -%>
 
+    <%- } # additional_queries.each -%>
   </queries>
   <outputWriter class="org.jmxtrans.agent.GraphitePlainTextTcpOutputWriter">
     <host><%= @graphite_host %></host>
     <port><%= @graphite_port %></port>
     <namePrefix><%= @graphite_name_prefix %></namePrefix>
   </outputWriter>
-  <collectIntervalInSeconds><%= @collection_interval_seconds%></collectIntervalInSeconds>
+  <collectIntervalInSeconds><%= @collection_interval_seconds %></collectIntervalInSeconds>
   <reloadConfigurationCheckIntervalInSeconds><%= @reload_configuration_check_interval_seconds %></reloadConfigurationCheckIntervalInSeconds>
 </jmxtrans-agent>
