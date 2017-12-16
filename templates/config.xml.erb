@@ -1,6 +1,6 @@
 <jmxtrans-agent>
   <queries>
-    <%- if @include_common_jvm_queries then -%>
+    <%- if @include_common_jvm_queries -%>
     <!-- JVM -->
     <query
       objectName="java.lang:type=GarbageCollector,*"
@@ -41,10 +41,10 @@
     -%>
     <query
       objectName="<%= objectName %>"
-      <%- if attributes && !attributes.empty? then -%>
+      <%- if attributes && !attributes.empty? -%>
       attributes="<%= attributes.sort.join(",") %>
       <%- end -%>
-      <%- if resultAlias then -%>
+      <%- if resultAlias -%>
       resultAlias="<%= resultAlias %>"/>
       <%- end -%>
 
