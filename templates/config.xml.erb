@@ -30,15 +30,17 @@
       objectName="java.lang:type=Threading"
       attributes="ThreadCount,DaemonThreadCount"
       resultAlias="threads.#attribute#"/>
+
     <%- end -%>
     <%- if @include_common_eap6_queries -%>
-
     <query
       objectName="jboss.web:type=GlobalRequestProcessor,name=*"
       attributes="bytesSent,bytesReceived,requestCount,errorCount"
       resultAlias="http.%name%.#attribute#"/>
-    <%- end -%>  
-    <%- @custom_queries.each { |q| 
+
+    <%- end 
+
+        @custom_queries.each { |q| 
           objectName = q["objectName"]
           attributes = q["attributes"]
           resultAlias = q["resultAlias"]
