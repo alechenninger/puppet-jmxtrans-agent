@@ -35,7 +35,7 @@
 
     <query
       objectName="jboss.web:type=GlobalRequestProcessor,name=*"
-      attributes="bytesSent,bytesReceived"
+      attributes="bytesSent,bytesReceived,requestCount,errorCount"
       resultAlias="http.%name%.#attribute#"/>
     <%- end -%>  
     <%- @custom_queries.each { |q| 
