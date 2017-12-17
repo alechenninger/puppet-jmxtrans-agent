@@ -2,6 +2,7 @@ class jmxtrans_agent (
   $version='1.2.8-SNAPSHOT',
   $collection_interval_seconds=10,
   $include_common_jvm_queries=true,
+  $include_common_eap6_queries=false,
   $custom_queries=[],
   $graphite_host,
   $graphite_port=2003,
@@ -17,9 +18,10 @@ class jmxtrans_agent (
   $config_path = '/etc/jmxtrans_agent/config.xml'
   $jar_name = "jmxtrans-agent-$version.jar"
   $jar_path = "$install_path/$jar_name"
+  $_wait_for_custom_mbean_server = $wait_for_custom_mbean_server or $include_common_eap6_queries
 
   # Intended to be used outside the module.
-  $jvm_arguments="-javaagent:$jar_path=$config_path -Djmxtrans.agent.premain.waitForCustomMBeanServer=$wait_for_custom_mbean_server"
+  $jvm_arguments="-javaagent:$jar_path=$config_path -Djmxtrans.agent.premain.waitForCustomMBeanServer=$_wait_for_custom_mbean_server"
 
   file { $install_path:
     ensure => directory,
