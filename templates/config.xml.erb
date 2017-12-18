@@ -48,7 +48,7 @@
     <query
       objectName="<%= objectName %>"
       <%- if attributes && !attributes.empty? -%>
-      attributes="<%= attributes.sort.join(",") %>
+      attributes="<%= attributes.sort.join(",") %>"
       <%- end -%>
       <%- if resultAlias -%>
       resultAlias="<%= resultAlias %>"/>
