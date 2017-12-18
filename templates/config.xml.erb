@@ -31,6 +31,16 @@
       attributes="ThreadCount,DaemonThreadCount"
       resultAlias="threads.#attribute#"/>
 
+    <query
+      objectName="java.lang:type=Runtime"
+      attributes="Uptime"
+      resultAlias="#attribute#"/>
+
+    <query
+      objectName="java.lang:type=OperatingSystem"
+      attributes="OpenFileDescriptorCount,MaxFileDescriptorCount"
+      resultAlias="#attribute#"/>
+
     <%- end -%>
     <%- if @include_common_eap6_queries -%>
     <query
