@@ -54,11 +54,15 @@
           objectName = q["objectName"]
           attributes = q["attributes"]
           resultAlias = q["resultAlias"]
+          collectIntervalInSeconds = q["collectIntervalInSeconds"]
     -%>
     <query
       objectName="<%= objectName %>"
       <%- if attributes && !attributes.empty? -%>
       attributes="<%= attributes.sort.join(",") %>"
+      <%- end -%>
+      <%- if collectIntervalInSeconds -%>
+      collectIntervalInSeconds="<%= collectIntervalInSeconds %>"  
       <%- end -%>
       <%- if resultAlias -%>
       resultAlias="<%= resultAlias %>"/>
