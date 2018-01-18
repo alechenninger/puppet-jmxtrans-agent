@@ -49,7 +49,18 @@
       resultAlias="http.%name%.#attribute#"/>
 
     <%- end 
+        if @include_common_eap7_queries -%>
+    <query
+      objectName="jboss.as:subsystem=undertow,server=*,http-listener=*"
+      attributes="bytesSent,bytesReceived,requestCount,errorCount"
+      resultAlias="http.%server%.%http-listener%.#attribute#"/>
 
+    <query
+      objectName="jboss.as:subsystem=undertow,server=*,https-listener=*"
+      attributes="bytesSent,bytesReceived,requestCount,errorCount"
+      resultAlias="http.%server%.%https-listener%.#attribute#"/>
+
+    <%- end 
         @custom_queries.each { |q| 
           objectName = q["objectName"]
           attributes = q["attributes"]
